@@ -287,22 +287,22 @@ function clearAllEvents() {
 }
 
 function parseJSONForm() {
-  var result = "{";
+  var result = {};
   var formInputs = $('#jsonData').find('.form-inline');
   formInputs.each(function(index, el) {
     var key = $(el).find('.key').val().trim();
     if (!key.length) {
       return true;
     }
-    result += "\"" + key + "\"";
-    result += (" : ");
-    result += "\"" + ($(el).find('.value').val().trim()) + "\"";
-    result += ",";
+    if($(el).find('.value').val().trim() == "true")
+      result[key] = true;
+    else if ($(el).find('.value').val().trim() == "false")
+      result[key] = false;
+    else
+      result[key] = $(el).find('.value').val().trim();
   });
-  result = result.slice(0, -1);
-  result += "}";
   console.log("json to emit " + result);
-  return JSON.parse(result);
+  return result;
 }
 
 function makePanel(event) {
